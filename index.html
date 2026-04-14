@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chroma — Professional Color Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Toast -->
+  <div id="toast" class="toast" aria-live="polite"></div>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-logo">
+      <div class="logo-mark"></div>
+      <span class="logo-text">Chroma</span>
+    </div>
+    <div class="header-actions">
+      <button class="btn-icon" id="randomBtn" title="Random Color (R)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 18h1.4c1.3 0 2.5-.6 3.3-1.7l6.1-8.6c.7-1.1 2-1.7 3.3-1.7H22"/><path d="m18 2 4 4-4 4"/><path d="M2 6h1.9c1.5 0 2.9.9 3.5 2.2"/><path d="M22 18h-5.9c-1.3 0-2.6-.7-3.3-1.7l-.5-.8"/><path d="m18 14 4 4-4 4"/></svg>
+      </button>
+      <button class="btn-icon" id="eyedropperBtn" title="Eyedropper (E)" id="eyedropperBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m2 22 1-1h3l9-9"/><path d="M3 21v-3l9-9"/><path d="m15 6 3.4-3.4a2.1 2.1 0 1 1 3 3L18 9l.4.4a2.1 2.1 0 1 1-3 3l-3.8-3.8a2.1 2.1 0 1 1 3-3l.4.4Z"/></svg>
+      </button>
+      <button class="btn-icon" id="themeToggle" title="Toggle Theme (T)">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main class="main">
+
+    <!-- LEFT: Picker Panel -->
+    <section class="panel picker-panel">
+      <div class="panel-label">COLOR PICKER</div>
+
+      <!-- Saturation/Brightness Canvas -->
+      <div class="picker-canvas-wrapper">
+        <canvas id="pickerCanvas" width="300" height="260"></canvas>
+        <div class="picker-cursor" id="pickerCursor"></div>
+      </div>
+
+      <!-- Hue Slider -->
+      <div class="slider-group">
+        <label class="slider-label">Hue</label>
+        <div class="slider-track hue-track">
+          <div class="slider-thumb" id="hueThumb"></div>
+          <input type="range" class="range-input" id="hueSlider" min="0" max="360" value="210" />
+        </div>
+        <span class="slider-value" id="hueVal">210°</span>
+      </div>
+
+      <!-- Opacity Slider -->
+      <div class="slider-group">
+        <label class="slider-label">Opacity</label>
+        <div class="slider-track opacity-track" id="opacityTrack">
+          <div class="slider-thumb" id="opacityThumb"></div>
+          <input type="range" class="range-input" id="opacitySlider" min="0" max="100" value="100" />
+        </div>
+        <span class="slider-value" id="opacityVal">100%</span>
+      </div>
+
+      <!-- Preview -->
+      <div class="color-preview-row">
+        <div class="preview-box-wrapper">
+          <div class="preview-checkerboard"></div>
+          <div class="preview-box" id="previewBox"></div>
+        </div>
+        <div class="preview-info">
+          <span class="preview-label">CURRENT</span>
+          <span class="preview-hex" id="previewHex">#3B82F6</span>
+          <div class="preview-wcag" id="wcagBadge"></div>
+        </div>
+        <button class="btn-save-fav" id="saveToFavBtn" title="Save to Favorites">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </button>
+      </div>
+    </section>
+
+    <!-- CENTER/RIGHT: Formats Panel -->
+    <section class="panel formats-panel">
+      <div class="panel-label">COLOR VALUES</div>
+
+      <div class="format-list">
+        <!-- HEX -->
+        <div class="format-row">
+          <span class="format-tag">HEX</span>
+          <input class="format-input" id="hexInput" type="text" value="#3B82F6" spellcheck="false" />
+          <button class="copy-btn" data-target="hexInput" title="Copy HEX (C)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+          </button>
+        </div>
+        <!-- RGB -->
+        <div class="format-row">
+          <span class="format-tag">RGB</span>
+          <input class="format-input" id="rgbInput" type="text" value="rgb(59, 130, 246)" spellcheck="false" />
+          <button class="copy-btn" data-target="rgbInput">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+          </button>
+        </div>
+        <!-- RGBA -->
+        <div class="format-row">
+          <span class="format-tag">RGBA</span>
+          <input class="format-input" id="rgbaInput" type="text" value="rgba(59, 130, 246, 1)" spellcheck="false" />
+          <button class="copy-btn" data-target="rgbaInput">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+          </button>
+        </div>
+        <!-- HSL -->
+        <div class="format-row">
+          <span class="format-tag">HSL</span>
+          <input class="format-input" id="hslInput" type="text" value="hsl(217, 91%, 60%)" spellcheck="false" />
+          <button class="copy-btn" data-target="hslInput">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+          </button>
+        </div>
+        <!-- HSLA -->
+        <div class="format-row">
+          <span class="format-tag">HSLA</span>
+          <input class="format-input" id="hslaInput" type="text" value="hsla(217, 91%, 60%, 1)" spellcheck="false" />
+          <button class="copy-btn" data-target="hslaInput">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- WCAG Checker -->
+      <div class="wcag-section">
+        <div class="panel-label" style="margin-top:0">CONTRAST CHECKER</div>
+        <div class="wcag-grid">
+          <div class="wcag-card" id="wcagWhite">
+            <div class="wcag-swatch-row">
+              <div class="wcag-swatch" style="background:#fff; color:#000">Aa</div>
+              <div class="wcag-swatch" id="wcagColorOnWhiteSwatch">Aa</div>
+            </div>
+            <div class="wcag-info">
+              <span class="wcag-ratio" id="wcagWhiteRatio">—</span>
+              <span class="wcag-label">on White</span>
+            </div>
+            <div class="wcag-badges" id="wcagWhiteBadges"></div>
+          </div>
+          <div class="wcag-card" id="wcagBlack">
+            <div class="wcag-swatch-row">
+              <div class="wcag-swatch" style="background:#000; color:#fff">Aa</div>
+              <div class="wcag-swatch" id="wcagColorOnBlackSwatch">Aa</div>
+            </div>
+            <div class="wcag-info">
+              <span class="wcag-ratio" id="wcagBlackRatio">—</span>
+              <span class="wcag-label">on Black</span>
+            </div>
+            <div class="wcag-badges" id="wcagBlackBadges"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RIGHT: Gradient Panel -->
+    <section class="panel gradient-panel">
+      <div class="panel-label">GRADIENT BUILDER</div>
+
+      <div class="gradient-preview-box" id="gradientPreview"></div>
+
+      <div class="gradient-controls">
+        <div class="gradient-type-row">
+          <label class="slider-label">Type</label>
+          <div class="segmented">
+            <button class="seg-btn active" data-type="linear">Linear</button>
+            <button class="seg-btn" data-type="radial">Radial</button>
+          </div>
+        </div>
+        <div class="gradient-angle-row" id="angleRow">
+          <label class="slider-label">Angle</label>
+          <div class="slider-track angle-track">
+            <input type="range" class="range-input" id="angleSlider" min="0" max="360" value="135" />
+          </div>
+          <span class="slider-value" id="angleVal">135°</span>
+        </div>
+      </div>
+
+      <!-- Color Stops -->
+      <div class="stops-header">
+        <span class="slider-label">COLOR STOPS</span>
+        <button class="btn-add-stop" id="addStopBtn">+ ADD</button>
+      </div>
+      <div class="stops-list" id="stopsList"></div>
+
+      <!-- Gradient Output -->
+      <div class="gradient-output-label">CSS OUTPUT</div>
+      <div class="gradient-output-row">
+        <input class="format-input gradient-output" id="gradientOutput" readonly />
+        <button class="copy-btn" data-target="gradientOutput">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+        </button>
+      </div>
+      <button class="btn-use-current" id="addCurrentToGradientBtn">Add Current Color as Stop</button>
+    </section>
+
+  </main>
+
+  <!-- BOTTOM: History + Favorites -->
+  <div class="bottom-panels">
+
+    <!-- History -->
+    <section class="panel history-panel">
+      <div class="panel-header-row">
+        <div class="panel-label" style="margin-bottom:0">COLOR HISTORY</div>
+        <button class="btn-text-sm" id="clearHistoryBtn">Clear</button>
+      </div>
+      <div class="swatch-grid" id="historyGrid"></div>
+    </section>
+
+    <!-- Favorites -->
+    <section class="panel favorites-panel">
+      <div class="panel-header-row">
+        <div class="panel-label" style="margin-bottom:0">FAVORITES</div>
+        <div class="fav-actions">
+          <button class="btn-text-sm" id="exportPaletteBtn">Export JSON</button>
+          <label class="btn-text-sm" for="importPaletteFile">Import</label>
+          <input type="file" id="importPaletteFile" accept=".json" style="display:none" />
+          <button class="btn-text-sm danger" id="clearFavsBtn">Clear</button>
+        </div>
+      </div>
+      <div class="swatch-grid" id="favoritesGrid"></div>
+    </section>
+
+  </div>
+
+  <!-- Keyboard Shortcuts Hint -->
+  <div class="shortcuts-bar">
+    <span><kbd>C</kbd> Copy HEX</span>
+    <span><kbd>R</kbd> Random</span>
+    <span><kbd>E</kbd> Eyedropper</span>
+    <span><kbd>T</kbd> Theme</span>
+    <span><kbd>S</kbd> Save Fav</span>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
